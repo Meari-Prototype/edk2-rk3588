@@ -41,9 +41,6 @@
 #include "DebugSerialPort.h"
 #include "Display.h"
 
-#define RK3588_SYS_GRF_BASE      0xFD58C000
-#define RK3588_SYS_GRF_SOC_CON6  (RK3588_SYS_GRF_BASE + 0x0318)
-
 extern UINT8  RK3588DxeHiiBin[];
 extern UINT8  RK3588DxeStrings[];
 
@@ -280,8 +277,8 @@ RK3588SetupAudio (
     HAL_CRU_ClkSetMux (MCLK_I2S0_8CH_TX, 0x1);    // clk_i2s0_8ch_tx_frac
 
     // Output MCLK to the codec
-    HAL_CRU_ClkSetMux (I2S0_8CH_MCLKOUT, 0x0);          // mclk_i2s0_8ch_tx
-    MmioWrite32 (RK3588_SYS_GRF_SOC_CON6, BIT0 << 16); // i2s0_mclkout_to_io enable
+    HAL_CRU_ClkSetMux (I2S0_8CH_MCLKOUT, 0x0); // mclk_i2s0_8ch_tx
+    HAL_CRU_ClkEnable (I2S0_8CH_MCLKOUT_TO_IO);
   }
 
   if (FixedPcdGetBool (PcdI2S1Supported)) {
